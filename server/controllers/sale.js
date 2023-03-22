@@ -9,10 +9,7 @@ const router = express.Router();
 
 
 export const getSale = async (req, res) => {
-  const id = req.userId;
-  const userId = id;
-  // console.log(req.userId);
-
+ 
   try {
     const sale = await Sale.find();
     // console.log(laundry, "Laundry");

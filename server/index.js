@@ -5,6 +5,7 @@ import cors from "cors";
 
 import inventryRoutes from "./routes/inventry.js";
 import userRoutes from "./routes/user.js";
+import saleRoutes from "./routes/sale.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors());
 //  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
 app.use("/inventry", inventryRoutes);
 app.use("/user", userRoutes);
+app.use("/sale", saleRoutes);
 
 const CONNECTION_URL =
   "mongodb+srv://aman:aman1234@cluster0.kywvikl.mongodb.net/inventry";
