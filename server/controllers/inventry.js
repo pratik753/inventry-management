@@ -31,18 +31,18 @@ export const getAllLaundry = async (req, res) => {
   }
 };
 
-export const createLaundry = async (req, res) => {
-  const laundry = req.body;
+export const createInventory = async (req, res) => {
+  const inventory = req.body;
   // console.log(laundry);
-  const newLaundry = new Laundry({
-    ...laundry,
+  const newInventory = new Inventry({
+    ...inventory,
     createdAt: new Date().toISOString(),
   });
 
   try {
-    await newLaundry.save();
+    await newInventory.save();
     // console.log(laundry, "succes");
-    res.status(201).json(newLaundry);
+    res.status(201).json(newInventory);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -72,6 +72,24 @@ export const postInventry = async (req, res) => {
     // console.log(laundry, "succes");
     res.status(201).json(newInventry);
   } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+export const inventryQuantity = async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+  console.log(id,data)
+ try{
+  const updateData = await Inventry.findByIdAndUpdate(
+    id,
+    {
+      quantity: data.quantity,
+    },
+    { new: true }
+  );   
+   res.status(201).json(updateData);
+  } catch (error) {
+    console.log(error)
     res.status(409).json({ message: error.message });
   }
 };

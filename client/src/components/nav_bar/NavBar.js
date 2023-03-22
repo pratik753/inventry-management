@@ -41,8 +41,8 @@ const NavBar = () => {
     history.push("/");
     // setUser(null);
   };
-  const ChangePassword = () => {
-    history.push("/changePassword");
+  const AddProduct = () => {
+    history.push("/addProduct");
     // setUser(null);
   };
   const signInHandler = () => {
@@ -87,7 +87,7 @@ const NavBar = () => {
                 variant="contained"
                 className={classes.logout}
                 color="secondary"
-                onClick={ChangePassword}
+                onClick={AddProduct}
               >
                 Add Product
               </Button>

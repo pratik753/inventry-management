@@ -29,7 +29,8 @@ const Form = ({ currentId, setCurrentId }) => {
   const [productName, setProductName] = useState([]);
   const [inventoryAll, setInventoryAll] = useState([])
 
-  const [inventoryData, setInventoryData] = useState({
+  const [inventryData, setInventoryData] = useState({
+    id: "",
     date: new Date(),
     productName: "",
     price: 0,
@@ -65,13 +66,23 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(
-      createInventory({
-        ...inventoryData,
-        userName: user?.result?.name,
-        userId: user?.result?._id,
-      })
-    );
+    const d=await api.createSale({
+      purchaseDate:inventryData.date,
+      price: inventryData.price,
+      quantity: inventryData.quantity,
+      productName: inventryData.productName,     
+    })
+    const dd= await api.inventryQuantity({
+      quantity:inventryData.Avi_quantity-inventryData.quantity
+    },inventryData.id)
+    console.log(d,dd)
+    // dispatch(
+    //   createInventory({
+    //     ...inventryData,
+    //     userName: user?.result?.name,
+    //     userId: user?.result?._id,
+    //   })
+    // );
     clear();
   };
 
@@ -93,9 +104,10 @@ const Form = ({ currentId, setCurrentId }) => {
     const inventory = inventoryAll.find(inventoryAll => inventoryAll.productName === value);
     console.log(inventory)
     var current_date=new Date(); 
-      var set_to=current_date.getFullYear()+"-"+(current_date.getMonth()+1)+"-"+current_date.getDate();
+    var set_to=current_date.getFullYear()+"-"+(current_date.getMonth()+1)+"-"+current_date.getDate();
     setInventoryData({
       ...inventory,
+      id:inventory._id,
       date: set_to ,
       productName: inventory.productName,
       price: inventory.price,
@@ -103,14 +115,14 @@ const Form = ({ currentId, setCurrentId }) => {
       quantity: 1,
     })
     // setInventoryData({
-    //   ...inventoryData,
+    //   ...inventryData,
     //   productName: value
     // })
     // setProductName(
     //   // On autofill we get a stringified value.
     //   typeof value === 'string' ? value.split(',') : value,
     // );
-    console.log(inventoryData)
+    console.log(inventryData)
   };
 
   return (
@@ -128,7 +140,7 @@ const Form = ({ currentId, setCurrentId }) => {
           // type="date"
           fullWidth
           disabled
-          value={inventoryData.date}
+          value={inventryData.date}
 
         />
         {/* <input /> */}
@@ -139,7 +151,7 @@ const Form = ({ currentId, setCurrentId }) => {
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
 
-              value={inventoryData.productName}
+              value={inventryData.productName}
               onChange={handleChange}
               input={<OutlinedInput label="Name" />}
             >
@@ -162,10 +174,10 @@ const Form = ({ currentId, setCurrentId }) => {
             variant="outlined"
             label="quantity"
             type="number"
-            value={inventoryData.quantity}
-            onChange={(e) => setInventoryData({ ...inventoryData, quantity: e.target.value })}
+            value={inventryData.quantity}
+            onChange={(e) => setInventoryData({ ...inventryData, quantity: e.target.value })}
           />
-          <Typography variant="h6">{inventoryData?.price}</Typography>
+          <Typography variant="h6">{inventryData?.price}</Typography>
         </div>
 
 
@@ -173,7 +185,7 @@ const Form = ({ currentId, setCurrentId }) => {
         <div className={classes.divBlock}>
           <Typography variant="h6">{"Total Price : Rs "}</Typography>
 
-          <Typography variant="h6">{inventoryData.quantity * inventoryData?.price}</Typography>
+          <Typography variant="h6">{inventryData.quantity * inventryData?.price}</Typography>
         </div>
 
 
