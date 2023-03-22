@@ -30,7 +30,7 @@ const Form = ({ currentId, setCurrentId }) => {
   const [inventoryAll, setInventoryAll] = useState([])
 
   const [inventoryData, setInventoryData] = useState({
-    date: "",
+    date: new Date(),
     productName: "",
     price: 0,
     quantity: 1,
@@ -92,9 +92,11 @@ const Form = ({ currentId, setCurrentId }) => {
     const { target: { value }, } = event;
     const inventory = inventoryAll.find(inventoryAll => inventoryAll.productName === value);
     console.log(inventory)
+    var current_date=new Date(); 
+      var set_to=current_date.getFullYear()+"-"+(current_date.getMonth()+1)+"-"+current_date.getDate();
     setInventoryData({
       ...inventory,
-      date: inventory.date,
+      date: set_to ,
       productName: inventory.productName,
       price: inventory.price,
       Avi_quantity: inventory.quantity,
@@ -155,7 +157,6 @@ const Form = ({ currentId, setCurrentId }) => {
 
         </div>
         <div className={classes.divBlock}>
-          <Typography variant="h6">{"quantity"}</Typography>
           <TextField
             name="quantity"
             variant="outlined"

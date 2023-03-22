@@ -11,7 +11,7 @@ const NavBar = () => {
   const classes = useStyles();
   const location = useLocation();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  console.log(user);
+  // console.log(user);
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
@@ -22,27 +22,32 @@ const NavBar = () => {
     }
     // JWT
     setUser(JSON.parse(localStorage.getItem("profile")));
+    return ()=> console.log("hi")
   }, [location]);
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
     dispatch({ type: "CLEAR" });
     history.push("/");
-    setUser(null);
+    // setUser(null);
   };
   const allRequest = () => {
     // dispatch({ type: "LOGOUT" });
     // dispatch({ type: "CLEAR" });
     history.push("/allRequest");
-    setUser(null);
+    // setUser(null);
   };
   const dashboard = () => {
     history.push("/");
-    setUser(null);
+    // setUser(null);
   };
   const ChangePassword = () => {
     history.push("/changePassword");
-    setUser(null);
+    // setUser(null);
+  };
+  const signInHandler = () => {
+    history.push("/auth");
+    // setUser(null);
   };
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -107,14 +112,14 @@ const NavBar = () => {
             </div>
           </>
         ) : (
-          <Button
-            component={Link}
-            to="/auth"
-            variant="contained"
-            color="primary"
+          <button
+            
+            
+           
+            onClick={signInHandler}
           >
             Sign In
-          </Button>
+          </button>
         )}
       </Toolbar>
     </AppBar>
