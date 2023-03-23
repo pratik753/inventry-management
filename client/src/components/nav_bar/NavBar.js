@@ -6,8 +6,28 @@ import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import decode from "jwt-decode";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import CreateProfile from "./CreateProfile";
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 
 const NavBar = () => {
+  const [opend, setOpend] = React.useState(false);
+  const handleOpend = () => setOpend(true);
+  const handleClosed = () => setOpend(false);
   const classes = useStyles();
   const location = useLocation();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
@@ -49,7 +69,16 @@ const NavBar = () => {
     history.push("/auth");
     // setUser(null);
   };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
+    <>
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
         <Typography
@@ -95,20 +124,28 @@ const NavBar = () => {
                 className={classes.purple}
                 alt={user?.result.name}
                 src={user?.result.imageUrl}
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
               >
                 {user?.result.name.charAt(0)}
               </Avatar>
-              <Typography className={classes.userName} variant="h6">
-                {user?.result.name}
-              </Typography>
-              <Button
-                variant="contained"
-                className={classes.logout}
-                color="secondary"
-                onClick={logout}
-              >
-                Logout
-              </Button>
+              <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={handleOpend}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem  onClick={logout}>Logout</MenuItem>
+            </Menu>
+              
             </div>
           </>
         ) : (
@@ -123,6 +160,17 @@ const NavBar = () => {
         )}
       </Toolbar>
     </AppBar>
+    <Modal
+    open={opend}
+    onClose={handleClosed}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <Box sx={style}>
+      <CreateProfile/>
+    </Box>
+  </Modal>
+    </>
   );
 };
 export default NavBar;
