@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { getInventory } from "../../api";
 import Axios from "axios";
+import "./TodaySale.css";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -42,33 +43,30 @@ const TodaySale = () => {
   }, []);
 
   return (
-    <TableContainer component={Paper} style={{ margin: "4rem" }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead style={{ backgroundClip: "blue" }}>
-          <TableRow>
-            <StyledTableCell>ProductName </StyledTableCell>
-            <StyledTableCell align="right">Price</StyledTableCell>
-            <StyledTableCell align="right">Quantity</StyledTableCell>
-            <StyledTableCell align="right">purchaseDate</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+    <div class="table-wrapper">
+    <h2 style={{textAlign:'center'}} >Today's Sale</h2>
+      <table>
+      
+        <thead>
+          <tr>
+            <th>ProductName</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>purchaseDate</th>
+          </tr>
+        </thead>
+        <tbody>
           {udata.map((row) => (
-            <TableRow
-              key={row._id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.productName}
-              </TableCell>
-              <TableCell align="right">{row.price}</TableCell>
-              <TableCell align="right">{row.quantity}</TableCell>
-              <TableCell align="right">{row.purchaseDate}</TableCell>
-            </TableRow>
+            <tr key={row._id}>
+              <td> {row.productName}</td>
+              <td>{row.price}</td>
+              <td>{row.quantity}</td>
+              <td>{row.purchaseDate}</td>
+            </tr>
           ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </tbody>
+      </table>
+    </div>
   );
 };
 
