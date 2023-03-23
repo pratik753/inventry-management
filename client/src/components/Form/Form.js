@@ -38,12 +38,16 @@ const Form = ({ currentId, setCurrentId }) => {
     Avi_quantity: 0,
   });
 
-  useEffect(async () => {
+  const getData=async()=>{
     const { data } = await api.getAllInventory();
     const names = data.map(data => data?.productName);
 
     setProductName(names);
     setInventoryAll(data);
+  }
+
+  useEffect(async () => {
+    getData()
   }, [])
 
 
@@ -54,35 +58,34 @@ const Form = ({ currentId, setCurrentId }) => {
 
 
   const clear = () => {
-    // setInventoryData({
-    //   date: Date(),
-    //   item_name: 0,
-    //   price: 0,
-    //   quantity: 0
-    // });
+    setInventoryData({
+      id: "",
+      date: new Date(),
+      productName: "",
+      price: 0,
+      quantity: 1,
+      Avi_quantity: 0,
+    });
+    getData()
   };
 
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const d=await api.createSale({
-      purchaseDate:inventryData.date,
+    if (inventryData.Avi_quantity - inventryData.quantity < 0) {
+      alert("Quantity is More");
+      return;
+    }
+    const d = await api.createSale({
+      purchaseDate: inventryData.date,
       price: inventryData.price,
       quantity: inventryData.quantity,
-      productName: inventryData.productName,     
+      productName: inventryData.productName,
     })
-    const dd= await api.inventryQuantity({
-      quantity:inventryData.Avi_quantity-inventryData.quantity
-    },inventryData.id)
-    console.log(d,dd)
-    // dispatch(
-    //   createInventory({
-    //     ...inventryData,
-    //     userName: user?.result?.name,
-    //     userId: user?.result?._id,
-    //   })
-    // );
+    const dd = await api.inventryQuantity({
+      quantity: inventryData.Avi_quantity - inventryData.quantity
+    }, inventryData.id)
     clear();
   };
 
@@ -103,12 +106,12 @@ const Form = ({ currentId, setCurrentId }) => {
     const { target: { value }, } = event;
     const inventory = inventoryAll.find(inventoryAll => inventoryAll.productName === value);
     console.log(inventory)
-    var current_date=new Date(); 
-    var set_to=current_date.getFullYear()+"-"+(current_date.getMonth()+1)+"-"+current_date.getDate();
+    var current_date = new Date();
+    var set_to = current_date.getFullYear() + "-" + (current_date.getMonth() + 1) + "-" + current_date.getDate();
     setInventoryData({
       ...inventory,
-      id:inventory._id,
-      date: set_to ,
+      id: inventory._id,
+      date: set_to,
       productName: inventory.productName,
       price: inventory.price,
       Avi_quantity: inventory.quantity,
@@ -167,6 +170,10 @@ const Form = ({ currentId, setCurrentId }) => {
             </Select>
           </FormControl>
 
+        </div>
+        <div className={classes.divBlock}>
+
+          <Typography variant="h6">Available :{inventryData.Avi_quantity}</Typography>
         </div>
         <div className={classes.divBlock}>
           <TextField

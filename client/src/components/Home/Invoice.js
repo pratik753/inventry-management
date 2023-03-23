@@ -5,7 +5,7 @@ const Invoice = () => {
     return (
         <>
             <Form />
-            <div>Invoice</div>
+            
         </>
     )
 }
